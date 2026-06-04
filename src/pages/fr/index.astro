@@ -17,17 +17,15 @@ const featured = FR_CALCULATORS.slice(0, 6);
 		<Header />
 		<main>
 			<section class="page-hero">
-				<p class="eyebrow">France 2026</p>
-				<h1>Calculatrices françaises gratuites</h1>
-				<p>Une plateforme de calculs fiscaux, financiers et du quotidien : sans compte, sans stockage et ouverte à tous.</p>
+				<h1>Calculatrices françaises — Gratuites. Transparentes. Sans données stockées.</h1>
+				<p>Plus de 50 outils pour calculer impôts, salaires, crédits, santé et dépenses du quotidien. Tous les calculs se font dans votre navigateur.</p>
 				<div class="hero-actions">
-					<a class="hero-button" href="/fr/salaire-net">Calculateur d'impôt</a>
-					<a class="hero-outline" href="/fr/faq">Voir la FAQ</a>
+					<a class="hero-button" href="/fr/salaire-net">Commencer maintenant</a>
 				</div>
 			</section>
 
 			<section>
-				<h2>Catégories</h2>
+				<h2>Parcourir par catégorie</h2>
 				<div class="category-grid">
 					{FR_CATEGORIES.map((category) => (
 						<a class="category-tile" href={`/fr/${category.slug}`}>

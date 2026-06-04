@@ -6,24 +6,50 @@ import { SITE_TITLE } from '../consts';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 	<head>
-		<BaseHead title={`${SITE_TITLE} | Home`} description="A French-first calculator platform built with Astro." />
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>Astro Calc</h1>
-			<p>Launch your first calculator platform with a France-first income tax tool.</p>
-			<section class="home-features">
-				<a class="feature-card" href="/fr/salaire-net">
-					<h2>Calculateur de Salaire Net</h2>
-					<p>Estimez l'impôt sur le revenu français avec les tranches 2025/2026.</p>
-				</a>
-				<a class="feature-card" href="/fr">
-					<h2>Voir toutes les calculatrices</h2>
-					<p>Accédez à toutes les pages de calcul et découvrez la structure de votre plateforme.</p>
-				</a>
+			<section class="page-hero">
+				<h1>Bienvenue sur {SITE_TITLE}</h1>
+				<p>{SITE_DESCRIPTION}</p>
+				<div class="hero-actions">
+					<a class="hero-button" href="/fr">Explorer les calculatrices</a>
+				</div>
+			</section>
+
+			<section>
+				<h2>Avantages</h2>
+				<div class="features-grid">
+					<div class="feature-item">
+						<span>🔒</span>
+						<h3>Aucune données stockées</h3>
+						<p>Tous les calculs sont faits dans votre navigateur. Rien n'est envoyé à un serveur.</p>
+					</div>
+					<div class="feature-item">
+						<span>📂</span>
+						<h3>Open Source</h3>
+						<p>Code accessible sur GitHub. Vérifiez les calculs vous-même.</p>
+					</div>
+					<div class="feature-item">
+						<span>✅</span>
+						<h3>À jour 2026</h3>
+						<p>Tranches d'imposition, salaires minima et allocations actualisés.</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h2>Commencer</h2>
+				<div class="start-grid">
+					<a href="/fr/salaire-net" class="start-card">Impôt sur le revenu</a>
+					<a href="/fr/brut-net" class="start-card">Brut → Net</a>
+					<a href="/fr/pret-immobilier" class="start-card">Prêt immobilier</a>
+					<a href="/fr" class="start-card">Toutes les calculatrices</a>
+				</div>
 			</section>
 		</main>
 		<Footer />

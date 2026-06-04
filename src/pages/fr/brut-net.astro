@@ -24,14 +24,28 @@ const contributionRate = 0.235;
 			</section>
 
 			<section class="hero-card">
-				<form id="salary-form">
-					<label for="brut">Salaire brut annuel (€)</label>
-					<input id="brut" name="brut" type="number" min="0" step="100" value={defaultBrut} required />
-					<label for="rate">Taux de charges salariales (%)</label>
-					<input id="rate" name="rate" type="number" min="0" max="100" step="0.1" value={contributionRate * 100} />
-					<button type="submit">Calculer</button>
-				</form>
-				<div id="results" class="results" aria-live="polite"></div>
+				<div class="calculator-input-group">
+					<form id="salary-form">
+						<label for="brut">Salaire brut annuel</label>
+						<div style="position: relative;">
+							<input id="brut" name="brut" type="number" min="0" step="1000" value={defaultBrut} required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+						</div>
+						<input type="range" id="brut-slider" min="0" max="500000" step="1000" value={defaultBrut} />
+						<div class="input-hint">Ajustez votre salaire brut</div>
+						
+						<label for="rate" style="margin-top: 1.5rem;">Taux de charges salariales</label>
+						<div style="position: relative;">
+							<input id="rate" name="rate" type="number" min="0" max="100" step="0.1" value={contributionRate * 100} />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">%</span>
+						</div>
+						<input type="range" id="rate-slider" min="0" max="50" step="0.1" value={contributionRate * 100} />
+						<div class="input-hint">Entre 20 et 25% typiquement en France</div>
+						
+						<button type="submit" style="margin-top: 1rem;">Calculer le net</button>
+					</form>
+				</div>
+				<div id="results" class="results calculator-result" aria-live="polite"></div>
 			</section>
 		</main>
 		<Footer />
@@ -86,6 +100,31 @@ const contributionRate = 0.235;
 				const rate = Number(document.getElementById('rate').value || 0) / 100;
 				results.innerHTML = render(brut, rate);
 			}
+
+			const brutInput = document.getElementById('brut');
+			const rateInput = document.getElementById('rate');
+			const brutSlider = document.getElementById('brut-slider');
+			const rateSlider = document.getElementById('rate-slider');
+
+			// Sync brut input and slider
+			brutInput.addEventListener('input', (e) => {
+				brutSlider.value = e.target.value;
+				update();
+			});
+			brutSlider.addEventListener('input', (e) => {
+				brutInput.value = e.target.value;
+				update();
+			});
+
+			// Sync rate input and slider
+			rateInput.addEventListener('input', (e) => {
+				rateSlider.value = e.target.value;
+				update();
+			});
+			rateSlider.addEventListener('input', (e) => {
+				rateInput.value = e.target.value;
+				update();
+			});
 
 			form.addEventListener('submit', (event) => {
 				event.preventDefault();

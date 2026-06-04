@@ -23,18 +23,44 @@ const description = 'Projetez le montant futur de votre épargne avec intérêts
 			</section>
 
 			<section class="hero-card">
-				<form id="savings-form">
-					<label for="initial">Épargne initiale (€)</label>
-					<input id="initial" name="initial" type="number" min="0" step="100" value="5000" required />
-					<label for="contribution">Versement mensuel (€)</label>
-					<input id="contribution" name="contribution" type="number" min="0" step="10" value="200" required />
-					<label for="rate">Taux annuel (%)</label>
-					<input id="rate" name="rate" type="number" min="0" step="0.01" value="4" required />
-					<label for="years">Durée (années)</label>
-					<input id="years" name="years" type="number" min="1" step="1" value="10" required />
-					<button type="submit">Calculer</button>
-				</form>
-				<div id="results" class="results" aria-live="polite"></div>
+				<div class="calculator-input-group">
+					<form id="savings-form">
+						<label for="initial">Épargne initiale</label>
+						<div style="position: relative;">
+							<input id="initial" name="initial" type="number" min="0" step="100" value="5000" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+						</div>
+						<input type="range" id="initial-slider" min="0" max="500000" step="1000" value="5000" />
+						<div class="input-hint">Capital initial</div>
+						
+						<label for="contribution" style="margin-top: 1.5rem;">Versement mensuel</label>
+						<div style="position: relative;">
+							<input id="contribution" name="contribution" type="number" min="0" step="10" value="200" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+						</div>
+						<input type="range" id="contribution-slider" min="0" max="5000" step="10" value="200" />
+						<div class="input-hint">Contribution régulière</div>
+						
+						<label for="rate" style="margin-top: 1.5rem;">Taux annuel</label>
+						<div style="position: relative;">
+							<input id="rate" name="rate" type="number" min="0" step="0.01" value="4" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">%</span>
+						</div>
+						<input type="range" id="rate-slider" min="0" max="10" step="0.01" value="4" />
+						<div class="input-hint">Rendement annuel</div>
+						
+						<label for="years" style="margin-top: 1.5rem;">Durée</label>
+						<div style="position: relative;">
+							<input id="years" name="years" type="number" min="1" step="1" value="10" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">ans</span>
+						</div>
+						<input type="range" id="years-slider" min="1" max="50" step="1" value="10" />
+						<div class="input-hint">Période d'investissement</div>
+						
+						<button type="submit" style="margin-top: 1rem;">Calculer l'épargne</button>
+					</form>
+				</div>
+				<div id="results" class="results calculator-result" aria-live="polite"></div>
 			</section>
 		</main>
 		<Footer />
@@ -65,6 +91,28 @@ const description = 'Projetez le montant futur de votre épargne avec intérêts
 					<p><strong>Total des versements :</strong> ${formatEUR(contribution * months)}</p>
 				`;
 			}
+
+			const initialInput = document.getElementById('initial');
+			const contributionInput = document.getElementById('contribution');
+			const rateInput = document.getElementById('rate');
+			const yearsInput = document.getElementById('years');
+
+			const initialSlider = document.getElementById('initial-slider');
+			const contributionSlider = document.getElementById('contribution-slider');
+			const rateSlider = document.getElementById('rate-slider');
+			const yearsSlider = document.getElementById('years-slider');
+
+			initialInput.addEventListener('input', (e) => { initialSlider.value = e.target.value; update(); });
+			initialSlider.addEventListener('input', (e) => { initialInput.value = e.target.value; update(); });
+
+			contributionInput.addEventListener('input', (e) => { contributionSlider.value = e.target.value; update(); });
+			contributionSlider.addEventListener('input', (e) => { contributionInput.value = e.target.value; update(); });
+
+			rateInput.addEventListener('input', (e) => { rateSlider.value = e.target.value; update(); });
+			rateSlider.addEventListener('input', (e) => { rateInput.value = e.target.value; update(); });
+
+			yearsInput.addEventListener('input', (e) => { yearsSlider.value = e.target.value; update(); });
+			yearsSlider.addEventListener('input', (e) => { yearsInput.value = e.target.value; update(); });
 
 			form.addEventListener('submit', (event) => {
 				event.preventDefault();

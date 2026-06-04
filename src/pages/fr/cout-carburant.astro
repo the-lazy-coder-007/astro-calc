@@ -23,18 +23,44 @@ const description = 'Calculez le coût en carburant pour un trajet en voiture en
 			</section>
 
 			<section class="hero-card">
-				<form id="fuel-form">
-					<label for="distance">Distance du trajet (km)</label>
-					<input id="distance" name="distance" type="number" min="0" step="1" value="120" required />
-					<label for="consumption">Consommation moyenne (L/100 km)</label>
-					<input id="consumption" name="consumption" type="number" min="0" step="0.1" value="6.5" required />
-					<label for="fuel-price">Prix du carburant (€ / L)</label>
-					<input id="fuel-price" name="fuel-price" type="number" min="0" step="0.01" value="1.85" required />
-					<label for="passengers">Nombre de passagers</label>
-					<input id="passengers" name="passengers" type="number" min="1" step="1" value="2" required />
-					<button type="submit">Calculer</button>
-				</form>
-				<div id="results" class="results" aria-live="polite"></div>
+				<div class="calculator-input-group">
+					<form id="fuel-form">
+						<label for="distance">Distance du trajet</label>
+						<div style="position: relative;">
+							<input id="distance" name="distance" type="number" min="0" step="5" value="120" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">km</span>
+						</div>
+						<input type="range" id="distance-slider" min="0" max="5000" step="5" value="120" />
+						<div class="input-hint">Distance en kilomètres</div>
+						
+						<label for="consumption" style="margin-top: 1.5rem;">Consommation moyenne</label>
+						<div style="position: relative;">
+							<input id="consumption" name="consumption" type="number" min="0" step="0.1" value="6.5" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">L/100km</span>
+						</div>
+						<input type="range" id="consumption-slider" min="3" max="15" step="0.1" value="6.5" />
+						<div class="input-hint">Litres par 100 km</div>
+						
+						<label for="fuel-price" style="margin-top: 1.5rem;">Prix du carburant</label>
+						<div style="position: relative;">
+							<input id="fuel-price" name="fuel-price" type="number" min="0" step="0.01" value="1.85" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€/L</span>
+						</div>
+						<input type="range" id="fuel-price-slider" min="0.5" max="3" step="0.01" value="1.85" />
+						<div class="input-hint">Prix par litre</div>
+						
+						<label for="passengers" style="margin-top: 1.5rem;">Nombre de passagers</label>
+						<div style="position: relative;">
+							<input id="passengers" name="passengers" type="number" min="1" step="1" value="2" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">👤</span>
+						</div>
+						<input type="range" id="passengers-slider" min="1" max="10" step="1" value="2" />
+						<div class="input-hint">De 1 à 10 passagers</div>
+						
+						<button type="submit" style="margin-top: 1rem;">Calculer le coût</button>
+					</form>
+				</div>
+				<div id="results" class="results calculator-result" aria-live="polite"></div>
 			</section>
 		</main>
 		<Footer />
@@ -61,6 +87,28 @@ const description = 'Calculez le coût en carburant pour un trajet en voiture en
 					<p><strong>Coût par passager :</strong> ${formatEUR(perPassenger)}</p>
 				`;
 			}
+
+			const distanceInput = document.getElementById('distance');
+			const consumptionInput = document.getElementById('consumption');
+			const priceInput = document.getElementById('fuel-price');
+			const passengersInput = document.getElementById('passengers');
+
+			const distanceSlider = document.getElementById('distance-slider');
+			const consumptionSlider = document.getElementById('consumption-slider');
+			const priceSlider = document.getElementById('fuel-price-slider');
+			const passengersSlider = document.getElementById('passengers-slider');
+
+			distanceInput.addEventListener('input', (e) => { distanceSlider.value = e.target.value; update(); });
+			distanceSlider.addEventListener('input', (e) => { distanceInput.value = e.target.value; update(); });
+
+			consumptionInput.addEventListener('input', (e) => { consumptionSlider.value = e.target.value; update(); });
+			consumptionSlider.addEventListener('input', (e) => { consumptionInput.value = e.target.value; update(); });
+
+			priceInput.addEventListener('input', (e) => { priceSlider.value = e.target.value; update(); });
+			priceSlider.addEventListener('input', (e) => { priceInput.value = e.target.value; update(); });
+
+			passengersInput.addEventListener('input', (e) => { passengersSlider.value = e.target.value; update(); });
+			passengersSlider.addEventListener('input', (e) => { passengersInput.value = e.target.value; update(); });
 
 			form.addEventListener('submit', (event) => {
 				event.preventDefault();

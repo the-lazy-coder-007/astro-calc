@@ -23,16 +23,36 @@ const description = 'Calculez les mensualités, le total des intérêts et le co
 			</section>
 
 			<section class="hero-card">
-				<form id="loan-form">
-					<label for="amount">Montant emprunté (€)</label>
-					<input id="amount" name="amount" type="number" min="0" step="1000" value="250000" required />
-					<label for="rate">Taux annuel (%)</label>
-					<input id="rate" name="rate" type="number" min="0" step="0.01" value="3.10" required />
-					<label for="years">Durée (années)</label>
-					<input id="years" name="years" type="number" min="1" step="1" value="20" required />
-					<button type="submit">Calculer</button>
-				</form>
-				<div id="results" class="results" aria-live="polite"></div>
+				<div class="calculator-input-group">
+					<form id="loan-form">
+						<label for="amount">Montant emprunté</label>
+						<div style="position: relative;">
+							<input id="amount" name="amount" type="number" min="0" step="5000" value="250000" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+						</div>
+						<input type="range" id="amount-slider" min="0" max="1000000" step="5000" value="250000" />
+						<div class="input-hint">Montant total du prêt immobilier</div>
+						
+						<label for="rate" style="margin-top: 1.5rem;">Taux annuel</label>
+						<div style="position: relative;">
+							<input id="rate" name="rate" type="number" min="0" step="0.01" value="3.10" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">%</span>
+						</div>
+						<input type="range" id="rate-slider" min="0" max="8" step="0.01" value="3.10" />
+						<div class="input-hint">Taux d'intérêt annuel</div>
+						
+						<label for="years" style="margin-top: 1.5rem;">Durée du prêt</label>
+						<div style="position: relative;">
+							<input id="years" name="years" type="number" min="1" step="1" value="20" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">ans</span>
+						</div>
+						<input type="range" id="years-slider" min="1" max="40" step="1" value="20" />
+						<div class="input-hint">De 1 à 40 ans</div>
+						
+						<button type="submit" style="margin-top: 1rem;">Calculer mensualité</button>
+					</form>
+				</div>
+				<div id="results" class="results calculator-result" aria-live="polite"></div>
 			</section>
 		</main>
 		<Footer />
@@ -61,6 +81,20 @@ const description = 'Calculez les mensualités, le total des intérêts et le co
 					<p><strong>Durée :</strong> ${years} ans (${months} mois)</p>
 				`;
 			}
+
+			const amountInput = document.getElementById('amount');
+			const rateInput = document.getElementById('rate');
+			const yearsInput = document.getElementById('years');
+			const amountSlider = document.getElementById('amount-slider');
+			const rateSlider = document.getElementById('rate-slider');
+			const yearsSlider = document.getElementById('years-slider');
+
+			amountInput.addEventListener('input', (e) => { amountSlider.value = e.target.value; update(); });
+			amountSlider.addEventListener('input', (e) => { amountInput.value = e.target.value; update(); });
+			rateInput.addEventListener('input', (e) => { rateSlider.value = e.target.value; update(); });
+			rateSlider.addEventListener('input', (e) => { rateInput.value = e.target.value; update(); });
+			yearsInput.addEventListener('input', (e) => { yearsSlider.value = e.target.value; update(); });
+			yearsSlider.addEventListener('input', (e) => { yearsInput.value = e.target.value; update(); });
 
 			form.addEventListener('submit', (event) => {
 				event.preventDefault();

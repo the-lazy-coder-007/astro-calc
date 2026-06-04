@@ -23,14 +23,28 @@ const description = 'Calculez votre indice de masse corporelle (IMC) et affichez
 			</section>
 
 			<section class="hero-card">
-				<form id="bmi-form">
-					<label for="weight">Poids (kg)</label>
-					<input id="weight" name="weight" type="number" min="0" step="0.1" value="70" required />
-					<label for="height">Taille (cm)</label>
-					<input id="height" name="height" type="number" min="0" step="0.5" value="175" required />
-					<button type="submit">Calculer</button>
-				</form>
-				<div id="results" class="results" aria-live="polite"></div>
+				<div class="calculator-input-group">
+					<form id="bmi-form">
+						<label for="weight">Poids</label>
+						<div style="position: relative;">
+							<input id="weight" name="weight" type="number" min="0" step="0.1" value="70" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">kg</span>
+						</div>
+						<input type="range" id="weight-slider" min="20" max="200" step="0.5" value="70" />
+						<div class="input-hint">Entre 20 et 200 kg</div>
+						
+						<label for="height" style="margin-top: 1.5rem;">Taille</label>
+						<div style="position: relative;">
+							<input id="height" name="height" type="number" min="0" step="0.5" value="175" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">cm</span>
+						</div>
+						<input type="range" id="height-slider" min="100" max="250" step="0.5" value="175" />
+						<div class="input-hint">Entre 100 et 250 cm</div>
+						
+						<button type="submit" style="margin-top: 1rem;">Calculer IMC</button>
+					</form>
+				</div>
+				<div id="results" class="results calculator-result" aria-live="polite"></div>
 			</section>
 		</main>
 		<Footer />
@@ -55,6 +69,29 @@ const description = 'Calculez votre indice de masse corporelle (IMC) et affichez
 					<p>IMC normal : 18,5 – 24,9</p>
 				`;
 			}
+
+			const weightInput = document.getElementById('weight');
+			const heightInput = document.getElementById('height');
+			const weightSlider = document.getElementById('weight-slider');
+			const heightSlider = document.getElementById('height-slider');
+
+			weightInput.addEventListener('input', (e) => {
+				weightSlider.value = e.target.value;
+				update();
+			});
+			weightSlider.addEventListener('input', (e) => {
+				weightInput.value = e.target.value;
+				update();
+			});
+
+			heightInput.addEventListener('input', (e) => {
+				heightSlider.value = e.target.value;
+				update();
+			});
+			heightSlider.addEventListener('input', (e) => {
+				heightInput.value = e.target.value;
+				update();
+			});
 
 			form.addEventListener('submit', (event) => {
 				event.preventDefault();

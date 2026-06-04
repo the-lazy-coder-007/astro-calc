@@ -23,14 +23,28 @@ const description = 'Calculez le prix après remise et le montant économisé su
 			</section>
 
 			<section class="hero-card">
-				<form id="discount-form">
-					<label for="price">Prix initial (€)</label>
-					<input id="price" name="price" type="number" min="0" step="0.01" value="120" required />
-					<label for="discount">Remise (%)</label>
-					<input id="discount" name="discount" type="number" min="0" max="100" step="0.1" value="20" required />
-					<button type="submit">Calculer</button>
-				</form>
-				<div id="results" class="results" aria-live="polite"></div>
+				<div class="calculator-input-group">
+					<form id="discount-form">
+						<label for="price">Prix initial</label>
+						<div style="position: relative;">
+							<input id="price" name="price" type="number" min="0" step="0.01" value="120" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+						</div>
+						<input type="range" id="price-slider" min="0" max="5000" step="1" value="120" />
+						<div class="input-hint">Prix avant remise</div>
+						
+						<label for="discount" style="margin-top: 1.5rem;">Pourcentage de remise</label>
+						<div style="position: relative;">
+							<input id="discount" name="discount" type="number" min="0" max="100" step="0.1" value="20" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">%</span>
+						</div>
+						<input type="range" id="discount-slider" min="0" max="100" step="0.1" value="20" />
+						<div class="input-hint">De 0 à 100%</div>
+						
+						<button type="submit" style="margin-top: 1rem;">Calculer remise</button>
+					</form>
+				</div>
+				<div id="results" class="results calculator-result" aria-live="polite"></div>
 			</section>
 		</main>
 		<Footer />
@@ -54,6 +68,17 @@ const description = 'Calculez le prix après remise et le montant économisé su
 					<p><strong>Vous économisez :</strong> ${(discount * 100).toFixed(1)} %</p>
 				`;
 			}
+
+			const priceInput = document.getElementById('price');
+			const discountInput = document.getElementById('discount');
+			const priceSlider = document.getElementById('price-slider');
+			const discountSlider = document.getElementById('discount-slider');
+
+			priceInput.addEventListener('input', (e) => { priceSlider.value = e.target.value; update(); });
+			priceSlider.addEventListener('input', (e) => { priceInput.value = e.target.value; update(); });
+
+			discountInput.addEventListener('input', (e) => { discountSlider.value = e.target.value; update(); });
+			discountSlider.addEventListener('input', (e) => { discountInput.value = e.target.value; update(); });
 
 			form.addEventListener('submit', (event) => {
 				event.preventDefault();

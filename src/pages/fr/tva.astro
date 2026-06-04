@@ -23,24 +23,35 @@ const description = 'Calculez facilement le prix hors taxe, le prix TTC et le mo
 			</section>
 
 			<section class="hero-card">
-				<form id="tva-form">
-					<label for="price">Prix</label>
-					<input id="price" name="price" type="number" min="0" step="0.01" value="120" required />
-					<label for="mode">Mode</label>
-					<select id="mode" name="mode">
-						<option value="ht">Prix HT → TTC</option>
-						<option value="ttc">Prix TTC → HT</option>
-					</select>
-					<label for="rate">Taux de TVA</label>
-					<select id="rate" name="rate">
-						<option value="0.20">20%</option>
-						<option value="0.055">5,5%</option>
-						<option value="0.10">10%</option>
-						<option value="0.021">2,1%</option>
-					</select>
-					<button type="submit">Calculer</button>
-				</form>
-				<div id="results" class="results" aria-live="polite"></div>
+				<div class="calculator-input-group">
+					<form id="tva-form">
+						<label for="price">Montant</label>
+						<div style="position: relative;">
+							<input id="price" name="price" type="number" min="0" step="0.01" value="120" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+						</div>
+						<input type="range" id="price-slider" min="0" max="10000" step="1" value="120" />
+						<div class="input-hint">Entrez le montant à calculer</div>
+						
+						<label for="mode" style="margin-top: 1.5rem;">Mode de calcul</label>
+						<select id="mode" name="mode">
+							<option value="ht">Prix HT → TTC</option>
+							<option value="ttc">Prix TTC → HT</option>
+						</select>
+						<div class="input-hint">Choix de la direction du calcul</div>
+						
+						<label for="rate" style="margin-top: 1rem;">Taux de TVA</label>
+						<select id="rate" name="rate">
+							<option value="0.20">20% (normal)</option>
+							<option value="0.055">5,5% (réduit)</option>
+							<option value="0.10">10% (intermédiaire)</option>
+							<option value="0.021">2,1% (super-réduit)</option>
+						</select>
+						
+						<button type="submit" style="margin-top: 1rem;">Calculer</button>
+					</form>
+				</div>
+				<div id="results" class="results calculator-result" aria-live="polite"></div>
 			</section>
 		</main>
 		<Footer />
@@ -77,6 +88,24 @@ const description = 'Calculez facilement le prix hors taxe, le prix TTC et le mo
 					<p><strong>Prix TTC :</strong> ${formatEUR(ttc)}</p>
 				`;
 			}
+
+			const priceInput = document.getElementById('price');
+			const priceSlider = document.getElementById('price-slider');
+			const modeSelect = document.getElementById('mode');
+			const rateSelect = document.getElementById('rate');
+
+			priceInput.addEventListener('input', (e) => {
+				priceSlider.value = e.target.value;
+				update();
+			});
+
+			priceSlider.addEventListener('input', (e) => {
+				priceInput.value = e.target.value;
+				update();
+			});
+
+			modeSelect.addEventListener('change', update);
+			rateSelect.addEventListener('change', update);
 
 			form.addEventListener('submit', (event) => {
 				event.preventDefault();

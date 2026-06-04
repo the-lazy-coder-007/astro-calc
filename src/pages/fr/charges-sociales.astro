@@ -23,12 +23,19 @@ const description = 'Simulez les cotisations sociales françaises pour un salair
 			</section>
 
 			<section class="hero-card">
-				<form id="charges-form">
-					<label for="brut">Salaire brut annuel (€)</label>
-					<input id="brut" name="brut" type="number" min="0" step="100" value="50000" required />
-					<button type="submit">Calculer</button>
-				</form>
-				<div id="results" class="results" aria-live="polite"></div>
+				<div class="calculator-input-group">
+					<form id="charges-form">
+						<label for="brut">Salaire brut annuel</label>
+						<div style="position: relative;">
+							<input id="brut" name="brut" type="number" min="0" step="1000" value="50000" required />
+							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+						</div>
+						<input type="range" id="brut-slider" min="0" max="500000" step="1000" value="50000" />
+						<div class="input-hint">Ajustez votre salaire brut annuel</div>
+						<button type="submit" style="margin-top: 1rem;">Calculer cotisations</button>
+					</form>
+				</div>
+				<div id="results" class="results calculator-result" aria-live="polite"></div>
 			</section>
 		</main>
 		<Footer />
@@ -86,6 +93,19 @@ const description = 'Simulez les cotisations sociales françaises pour un salair
 				const brut = Number(document.getElementById('brut').value || 0);
 				results.innerHTML = render(brut);
 			}
+
+			const brutInput = document.getElementById('brut');
+			const brutSlider = document.getElementById('brut-slider');
+
+			brutInput.addEventListener('input', (e) => {
+				brutSlider.value = e.target.value;
+				update();
+			});
+
+			brutSlider.addEventListener('input', (e) => {
+				brutInput.value = e.target.value;
+				update();
+			});
 
 			form.addEventListener('submit', (event) => {
 				event.preventDefault();

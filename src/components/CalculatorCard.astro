@@ -4,12 +4,13 @@ interface Props {
 	description: string;
 	href: string;
 	emoji: string;
+	categoryColor?: string;
 }
 
-const { title, description, href, emoji } = Astro.props;
+const { title, description, href, emoji, categoryColor = 'blue' } = Astro.props;
 ---
 
-<a class="calculator-card" href={href}>
+<a class="calculator-card" href={href} data-category={categoryColor}>
 	<div class="calculator-card__icon">{emoji}</div>
 	<div class="calculator-card__content">
 		<h3>{title}</h3>
@@ -44,6 +45,32 @@ const { title, description, href, emoji } = Astro.props;
 		place-items: center;
 		border-radius: 16px;
 		background: rgba(35, 55, 255, 0.08);
+	}
+
+	/* Category-specific icon backgrounds */
+	.calculator-card[data-category="blue"] .calculator-card__icon {
+		background: rgba(59, 130, 246, 0.08);
+	}
+	.calculator-card[data-category="amber"] .calculator-card__icon {
+		background: rgba(245, 158, 11, 0.08);
+	}
+	.calculator-card[data-category="green"] .calculator-card__icon {
+		background: rgba(16, 185, 129, 0.08);
+	}
+	.calculator-card[data-category="purple"] .calculator-card__icon {
+		background: rgba(168, 85, 247, 0.08);
+	}
+	.calculator-card[data-category="red"] .calculator-card__icon {
+		background: rgba(239, 68, 68, 0.08);
+	}
+	.calculator-card[data-category="orange"] .calculator-card__icon {
+		background: rgba(249, 115, 22, 0.08);
+	}
+	.calculator-card[data-category="indigo"] .calculator-card__icon {
+		background: rgba(99, 102, 241, 0.08);
+	}
+	.calculator-card[data-category="slate"] .calculator-card__icon {
+		background: rgba(100, 116, 139, 0.08);
 	}
 
 	.calculator-card__content h3 {

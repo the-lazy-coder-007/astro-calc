@@ -301,6 +301,63 @@ table {
 	transform: translateY(-2px);
 }
 
+/* Category-specific gradients */
+.category-tile[data-color="blue"] {
+	background: linear-gradient(135deg, rgba(59, 130, 246, 0.04) 0%, rgba(59, 130, 246, 0.02) 100%);
+}
+.category-tile[data-color="blue"]:hover {
+	background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.04) 100%);
+}
+
+.category-tile[data-color="amber"] {
+	background: linear-gradient(135deg, rgba(245, 158, 11, 0.04) 0%, rgba(245, 158, 11, 0.02) 100%);
+}
+.category-tile[data-color="amber"]:hover {
+	background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.04) 100%);
+}
+
+.category-tile[data-color="green"] {
+	background: linear-gradient(135deg, rgba(16, 185, 129, 0.04) 0%, rgba(16, 185, 129, 0.02) 100%);
+}
+.category-tile[data-color="green"]:hover {
+	background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.04) 100%);
+}
+
+.category-tile[data-color="purple"] {
+	background: linear-gradient(135deg, rgba(168, 85, 247, 0.04) 0%, rgba(168, 85, 247, 0.02) 100%);
+}
+.category-tile[data-color="purple"]:hover {
+	background: linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(168, 85, 247, 0.04) 100%);
+}
+
+.category-tile[data-color="red"] {
+	background: linear-gradient(135deg, rgba(239, 68, 68, 0.04) 0%, rgba(239, 68, 68, 0.02) 100%);
+}
+.category-tile[data-color="red"]:hover {
+	background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.04) 100%);
+}
+
+.category-tile[data-color="orange"] {
+	background: linear-gradient(135deg, rgba(249, 115, 22, 0.04) 0%, rgba(249, 115, 22, 0.02) 100%);
+}
+.category-tile[data-color="orange"]:hover {
+	background: linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, rgba(249, 115, 22, 0.04) 100%);
+}
+
+.category-tile[data-color="indigo"] {
+	background: linear-gradient(135deg, rgba(99, 102, 241, 0.04) 0%, rgba(99, 102, 241, 0.02) 100%);
+}
+.category-tile[data-color="indigo"]:hover {
+	background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(99, 102, 241, 0.04) 100%);
+}
+
+.category-tile[data-color="slate"] {
+	background: linear-gradient(135deg, rgba(100, 116, 139, 0.04) 0%, rgba(100, 116, 139, 0.02) 100%);
+}
+.category-tile[data-color="slate"]:hover {
+	background: linear-gradient(135deg, rgba(100, 116, 139, 0.08) 0%, rgba(100, 116, 139, 0.04) 100%);
+}
+
 .category-tile span {
 	font-size: 1.1rem;
 }

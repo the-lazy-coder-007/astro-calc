@@ -1,0 +1,98 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+
+const title = `Charges sociales | ${SITE_TITLE}`;
+const description = 'Simulez les cotisations sociales françaises pour un salaire brut annuel.';
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-hero">
+				<p class="eyebrow">Prestations sociales</p>
+				<h1>Charges sociales</h1>
+				<p>Estimez les cotisations sociales salariales pour un salaire brut en France.</p>
+			</section>
+
+			<section class="hero-card">
+				<form id="charges-form">
+					<label for="brut">Salaire brut annuel (€)</label>
+					<input id="brut" name="brut" type="number" min="0" step="100" value="50000" required />
+					<button type="submit">Calculer</button>
+				</form>
+				<div id="results" class="results" aria-live="polite"></div>
+			</section>
+		</main>
+		<Footer />
+		<script type="module">
+			const form = document.getElementById('charges-form');
+			const results = document.getElementById('results');
+
+			const rates = [
+				{ label: 'CSG / CRDS', rate: 0.097 },
+				{ label: 'Retraite', rate: 0.063 },
+				{ label: 'Chômage', rate: 0.024 },
+				{ label: 'Prévoyance', rate: 0.015 },
+				{ label: 'Autres cotisations', rate: 0.036 },
+			];
+
+			function formatEUR(value) {
+				return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
+			}
+
+			function render(brut) {
+				const breakdown = rates.map((item) => ({
+					label: item.label,
+					rate: item.rate,
+					amount: brut * item.rate,
+				}));
+				const total = breakdown.reduce((sum, item) => sum + item.amount, 0);
+				const netAvantImpot = brut - total;
+
+				return `
+					<div class="summary">
+						<p><strong>Salaire brut annuel :</strong> ${formatEUR(brut)}</p>
+						<p><strong>Total des cotisations :</strong> ${formatEUR(total)}</p>
+						<p><strong>Salaire net avant impôt :</strong> ${formatEUR(netAvantImpot)}</p>
+					</div>
+					<table>
+						<thead>
+							<tr><th>Type</th><th>Taux</th><th>Montant</th></tr>
+						</thead>
+						<tbody>
+							${breakdown
+								.map((item) => `
+									<tr>
+										<td>${item.label}</td>
+										<td>${(item.rate * 100).toFixed(1)}%</td>
+										<td>${formatEUR(item.amount)}</td>
+									</tr>
+								`)
+								.join('')}
+						</tbody>
+					</table>
+				`;
+			}
+
+			function update() {
+				const brut = Number(document.getElementById('brut').value || 0);
+				results.innerHTML = render(brut);
+			}
+
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				update();
+			});
+
+			update();
+		</script>
+	</body>
+</html>

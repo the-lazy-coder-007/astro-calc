@@ -1,0 +1,73 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+
+const title = `Prêt immobilier | ${SITE_TITLE}`;
+const description = 'Calculez les mensualités, le total des intérêts et le coût global de votre prêt immobilier.';
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-hero">
+				<p class="eyebrow">Logement & immobilier</p>
+				<h1>Prêt immobilier</h1>
+				<p>Calculez vos mensualités, les intérêts et le coût total d’un crédit immobilier.</p>
+			</section>
+
+			<section class="hero-card">
+				<form id="loan-form">
+					<label for="amount">Montant emprunté (€)</label>
+					<input id="amount" name="amount" type="number" min="0" step="1000" value="250000" required />
+					<label for="rate">Taux annuel (%)</label>
+					<input id="rate" name="rate" type="number" min="0" step="0.01" value="3.10" required />
+					<label for="years">Durée (années)</label>
+					<input id="years" name="years" type="number" min="1" step="1" value="20" required />
+					<button type="submit">Calculer</button>
+				</form>
+				<div id="results" class="results" aria-live="polite"></div>
+			</section>
+		</main>
+		<Footer />
+		<script type="module">
+			const form = document.getElementById('loan-form');
+			const results = document.getElementById('results');
+
+			function formatEUR(value) {
+				return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
+			}
+
+			function update() {
+				const amount = Number(document.getElementById('amount').value || 0);
+				const annualRate = Number(document.getElementById('rate').value || 0) / 100;
+				const years = Number(document.getElementById('years').value || 0);
+				const months = years * 12;
+				const monthlyRate = annualRate / 12;
+				const monthlyPayment = monthlyRate > 0 ? (amount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months)) : amount / months;
+				const totalPaid = monthlyPayment * months;
+				const totalInterest = totalPaid - amount;
+
+				results.innerHTML = `
+					<p><strong>Mensualité estimée :</strong> ${formatEUR(monthlyPayment)}</p>
+					<p><strong>Coût total du crédit :</strong> ${formatEUR(totalPaid)}</p>
+					<p><strong>Intérêts payés :</strong> ${formatEUR(totalInterest)}</p>
+					<p><strong>Durée :</strong> ${years} ans (${months} mois)</p>
+				`;
+			}
+
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				update();
+			});
+
+			update();
+		</script>
+	</body>
+</html>

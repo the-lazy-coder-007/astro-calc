@@ -1,0 +1,98 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+const title = `Brut → Net | ${SITE_TITLE}`;
+const description = 'Simulez votre salaire net avant impôt et le net après impôt pour un salaire brut annuel.';
+const defaultBrut = 50000;
+const contributionRate = 0.235;
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-hero">
+				<p class="eyebrow">Travail & Salaire</p>
+				<h1>Brut → Net</h1>
+				<p>Estimez votre salaire net avant impôt et le revenu d’une fiche de paie française.</p>
+			</section>
+
+			<section class="hero-card">
+				<form id="salary-form">
+					<label for="brut">Salaire brut annuel (€)</label>
+					<input id="brut" name="brut" type="number" min="0" step="100" value={defaultBrut} required />
+					<label for="rate">Taux de charges salariales (%)</label>
+					<input id="rate" name="rate" type="number" min="0" max="100" step="0.1" value={contributionRate * 100} />
+					<button type="submit">Calculer</button>
+				</form>
+				<div id="results" class="results" aria-live="polite"></div>
+			</section>
+		</main>
+		<Footer />
+		<script type="module">
+			const form = document.getElementById('salary-form');
+			const results = document.getElementById('results');
+
+			function formatEUR(value) {
+				return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
+			}
+
+			function render(brut, rate) {
+				const contributions = brut * rate;
+				const netAvantImpot = brut - contributions;
+				const { totalTax } = (function(income) {
+					let remaining = Math.max(0, income);
+					let previous = 0;
+					let total = 0;
+					const brackets = [
+						{ threshold: 10777, rate: 0 },
+						{ threshold: 27478, rate: 0.11 },
+						{ threshold: 78570, rate: 0.30 },
+						{ threshold: 168994, rate: 0.41 },
+						{ threshold: Infinity, rate: 0.45 },
+					];
+					for (const bracket of brackets) {
+						if (remaining <= 0) break;
+						const slice = Math.min(remaining, bracket.threshold - previous);
+						total += slice * bracket.rate;
+						remaining -= slice;
+						previous = bracket.threshold;
+					}
+					return { totalTax: total };
+				})(netAvantImpot);
+				const netApresImpot = netAvantImpot - totalTax;
+				const effectiveRate = brut > 0 ? (totalTax / brut) * 100 : 0;
+
+				return `
+					<div class="summary">
+						<p><strong>Salaire brut :</strong> ${formatEUR(brut)}</p>
+						<p><strong>Charges salariales :</strong> ${formatEUR(contributions)} (${(rate * 100).toFixed(1)} %)</p>
+						<p><strong>Salaire net avant impôt :</strong> ${formatEUR(netAvantImpot)}</p>
+						<p><strong>Impôt estimé :</strong> ${formatEUR(totalTax)}</p>
+						<p><strong>Salaire net après impôt :</strong> ${formatEUR(netApresImpot)}</p>
+						<p><strong>Taux fiscal effectif :</strong> ${effectiveRate.toFixed(1)} %</p>
+					</div>
+				`;
+			}
+
+			function update() {
+				const brut = Number(document.getElementById('brut').value || 0);
+				const rate = Number(document.getElementById('rate').value || 0) / 100;
+				results.innerHTML = render(brut, rate);
+			}
+
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				update();
+			});
+
+			update();
+		</script>
+	</body>
+</html>

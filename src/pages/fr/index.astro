@@ -1,0 +1,56 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { FR_CATEGORIES, FR_CALCULATORS } from '../../lib/fr/calculators.ts';
+
+const featured = FR_CALCULATORS.slice(0, 6);
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title="Astro Calc France | Calculatrices gratuites" description="Une plateforme de calculs pour la France : impôts, salaire, logement, santé, auto et finances." />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-hero">
+				<p class="eyebrow">France 2026</p>
+				<h1>Calculatrices françaises gratuites</h1>
+				<p>Une plateforme de calculs fiscaux, financiers et du quotidien : sans compte, sans stockage et ouverte à tous.</p>
+				<div class="hero-actions">
+					<a class="hero-button" href="/fr/salaire-net">Calculateur d'impôt</a>
+					<a class="hero-outline" href="/fr/faq">Voir la FAQ</a>
+				</div>
+			</section>
+
+			<section>
+				<h2>Catégories</h2>
+				<div class="category-grid">
+					{FR_CATEGORIES.map((category) => (
+						<a class="category-tile" href={`/fr/${category.slug}`}>
+							<span>→</span>
+							<div>
+								<strong>{category.title}</strong>
+								<p>Calculatrices dédiées et simulateurs pratiques.</p>
+							</div>
+						</a>
+					))}
+				</div>
+			</section>
+
+			<section>
+				<h2>Calculatrices populaires</h2>
+				<div class="calculator-grid">
+					{featured.map((calculator) => (
+						<CalculatorCard
+							href={calculator.href}
+							title={calculator.title}
+							description={calculator.description}
+							emoji={calculator.emoji}
+						/>
+					))}
+				</div>
+</html>

@@ -1,0 +1,35 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title={`Mentions légales | ${SITE_TITLE}`} description="Informations légales et mentions obligatoires pour le site de calculs français." />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-hero">
+				<p class="eyebrow">Mentions légales</p>
+				<h1>Mentions légales</h1>
+				<p>Informations légales concernant le projet de calculatrices françaises.</p>
+			</section>
+
+			<section class="hero-card">
+				<h2>Éditeur du site</h2>
+				<p>Projet Astro Calc, développé depuis un dépôt GitHub public. Les coordonnées complètes sont disponibles dans le dépôt.</p>
+
+				<h2>Hébergement</h2>
+				<p>Le site est hébergé en mode statique, aucune donnée utilisateur n’est enregistrée.</p>
+
+				<h2>Responsabilité</h2>
+				<p>Les résultats affichés sont indicatifs. Ils ne remplacent pas un avis professionnel ou une consultation fiscale.</p>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>

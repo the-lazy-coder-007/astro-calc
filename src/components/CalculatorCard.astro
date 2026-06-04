@@ -1,0 +1,64 @@
+---
+interface Props {
+	title: string;
+	description: string;
+	href: string;
+	emoji: string;
+}
+
+const { title, description, href, emoji } = Astro.props;
+---
+
+<a class="calculator-card" href={href}>
+	<div class="calculator-card__icon">{emoji}</div>
+	<div class="calculator-card__content">
+		<h3>{title}</h3>
+		<p>{description}</p>
+	</div>
+</a>
+
+<style>
+	.calculator-card {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 1rem;
+		padding: 1.5rem;
+		border-radius: 20px;
+		background: white;
+		border: 1px solid rgba(0, 0, 0, 0.07);
+		text-decoration: none;
+		color: inherit;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.calculator-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+	}
+
+	.calculator-card__icon {
+		font-size: 2rem;
+		width: 4rem;
+		height: 4rem;
+		display: grid;
+		place-items: center;
+		border-radius: 16px;
+		background: rgba(35, 55, 255, 0.08);
+	}
+
+	.calculator-card__content h3 {
+		margin: 0 0 0.5rem;
+		font-size: 1.2rem;
+	}
+
+	.calculator-card__content p {
+		margin: 0;
+		color: rgb(96, 115, 159);
+	}
+
+	@media (max-width: 720px) {
+		.calculator-card {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

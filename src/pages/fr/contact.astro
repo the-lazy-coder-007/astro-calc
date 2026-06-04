@@ -1,0 +1,38 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title={`Contact | ${SITE_TITLE}`} description="Contactez l'équipe du site pour des questions ou rapports de bogues." />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-hero">
+				<p class="eyebrow">Contact</p>
+				<h1>Contactez-nous</h1>
+				<p>Vous souhaitez signaler un bug, proposer un calculateur ou poser une question ?</p>
+			</section>
+
+			<section class="hero-card">
+				<h2>Open source et transparent</h2>
+				<p>Le code source est disponible sur GitHub. Vous pouvez ouvrir un issue ou un pull request directement dans le dépôt.</p>
+
+				<h2>Support</h2>
+				<p>Pour toute question, utilisez les issues GitHub ou contactez l’auteur du projet via le profil GitHub associé au dépôt.</p>
+
+				<h2>Liens utiles</h2>
+				<ul>
+					<li><a href="https://github.com/the-lazy-coder-007/astro-calc" target="_blank">Voir le projet sur GitHub</a></li>
+					<li><a href="/fr/faq">Consulter la FAQ</a></li>
+				</ul>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>

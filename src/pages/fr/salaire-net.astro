@@ -1,0 +1,135 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+import { franceIncomeTaxBrackets } from '../../lib/calculators/fr/salaire-net.ts';
+
+const calculatorTitle = 'Calculateur de Salaire Net';
+const calculatorDescription = 'Estimez votre impôt sur le revenu français en utilisant les tranches de 2025/2026.';
+const initialIncome = 50000;
+const brackets = franceIncomeTaxBrackets;
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title={`${calculatorTitle} | ${SITE_TITLE}`} description={calculatorDescription} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-hero">
+				<p class="eyebrow">Impôts & contributions</p>
+				<h1>{calculatorTitle}</h1>
+				<p>{calculatorDescription}</p>
+			</section>
+			<section class="hero-card">
+					<form id="salary-form">
+						<label for="income">Revenu imposable annuel (€)</label>
+						<input id="income" name="income" type="number" min="0" step="100" value={initialIncome} required />
+						<button type="submit">Calculer</button>
+					</form>
+					<div id="results" class="results" aria-live="polite"></div>
+				</div>
+				<div class="section-block">
+					<h2>Tranches d'imposition 2025</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Tranche</th>
+								<th>Taux</th>
+							</tr>
+						</thead>
+						<tbody>
+							{brackets.map((bracket, index) => (
+								<tr>
+									<td>
+										{index === 0
+											? `0 € – ${bracket.threshold.toLocaleString('fr-FR')} €`
+											: bracket.threshold === Infinity
+												? `> ${brackets[index - 1].threshold.toLocaleString('fr-FR')} €`
+											: `${brackets[index - 1].threshold.toLocaleString('fr-FR')} € – ${bracket.threshold.toLocaleString('fr-FR')} €`}
+									</td>
+									<td>{(bracket.rate * 100).toFixed(0)}%</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</main>
+		<Footer />
+		<script type="module">
+			const brackets = ${JSON.stringify(brackets)};
+			const resultsEl = document.getElementById('results');
+			const form = document.getElementById('salary-form');
+
+			function formatEUR(value) {
+				return new Intl.NumberFormat('fr-FR', {
+					style: 'currency',
+					currency: 'EUR',
+					maximumFractionDigits: 0,
+				}).format(value);
+			}
+
+			function calculateTax(income) {
+				let remaining = Math.max(0, income);
+				let previousThreshold = 0;
+				let totalTax = 0;
+				const breakdown = [];
+
+				for (const bracket of brackets) {
+					if (remaining <= 0) break;
+					const slice = Math.min(remaining, bracket.threshold - previousThreshold);
+					const tax = slice * bracket.rate;
+					breakdown.push({ rate: bracket.rate, taxable: slice, tax });
+					totalTax += tax;
+					remaining -= slice;
+					previousThreshold = bracket.threshold;
+				}
+
+				return { totalTax, breakdown };
+			}
+
+			function renderResult(income) {
+				const { totalTax, breakdown } = calculateTax(income);
+				const effectiveRate = income > 0 ? (totalTax / income) * 100 : 0;
+
+				return `
+					<div class="summary">
+						<p><strong>Revenu imposable :</strong> ${formatEUR(income)}</p>
+						<p><strong>Impôt total estimé :</strong> ${formatEUR(totalTax)}</p>
+						<p><strong>Taux effectif moyen :</strong> ${effectiveRate.toFixed(1)} %</p>
+					</div>
+					<div class="breakdown">
+						<h3>Détail par tranche</h3>
+						<ul>
+							${breakdown
+								.map(
+									(item) =>
+										`<li>${formatEUR(item.taxable)} taxés à ${(
+											item.rate * 100
+										).toFixed(0)} % → ${formatEUR(item.tax)}</li>`,
+								)
+								.join('')}
+						</ul>
+					</div>
+				`;
+			}
+
+			function updateResults() {
+				const incomeInput = document.getElementById('income');
+				const income = Number(incomeInput.value || 0);
+				resultsEl.innerHTML = renderResult(income);
+			}
+
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				updateResults();
+			});
+
+			updateResults();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,73 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+
+const title = `Coût carburant | ${SITE_TITLE}`;
+const description = 'Calculez le coût en carburant pour un trajet en voiture en fonction de votre consommation et du prix du carburant.';
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-hero">
+				<p class="eyebrow">Auto & mobilité</p>
+				<h1>Coût carburant</h1>
+				<p>Estimez le budget carburant pour un trajet et le coût par personne.</p>
+			</section>
+
+			<section class="hero-card">
+				<form id="fuel-form">
+					<label for="distance">Distance du trajet (km)</label>
+					<input id="distance" name="distance" type="number" min="0" step="1" value="120" required />
+					<label for="consumption">Consommation moyenne (L/100 km)</label>
+					<input id="consumption" name="consumption" type="number" min="0" step="0.1" value="6.5" required />
+					<label for="fuel-price">Prix du carburant (€ / L)</label>
+					<input id="fuel-price" name="fuel-price" type="number" min="0" step="0.01" value="1.85" required />
+					<label for="passengers">Nombre de passagers</label>
+					<input id="passengers" name="passengers" type="number" min="1" step="1" value="2" required />
+					<button type="submit">Calculer</button>
+				</form>
+				<div id="results" class="results" aria-live="polite"></div>
+			</section>
+		</main>
+		<Footer />
+		<script type="module">
+			const form = document.getElementById('fuel-form');
+			const results = document.getElementById('results');
+
+			function formatEUR(value) {
+				return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(value);
+			}
+
+			function update() {
+				const distance = Number(document.getElementById('distance').value || 0);
+				const consumption = Number(document.getElementById('consumption').value || 0);
+				const price = Number(document.getElementById('fuel-price').value || 0);
+				const passengers = Math.max(1, Number(document.getElementById('passengers').value || 1));
+				const liters = (distance * consumption) / 100;
+				const totalCost = liters * price;
+				const perPassenger = totalCost / passengers;
+
+				results.innerHTML = `
+					<p><strong>Carburant total :</strong> ${liters.toFixed(1)} L</p>
+					<p><strong>Coût total :</strong> ${formatEUR(totalCost)}</p>
+					<p><strong>Coût par passager :</strong> ${formatEUR(perPassenger)}</p>
+				`;
+			}
+
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				update();
+			});
+
+			update();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,51 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { FR_CATEGORIES, FR_CATEGORY_CALCULATORS } from '../../lib/fr/calculators.ts';
+
+const categoryKey = Astro.params.category;
+const category = FR_CATEGORIES.find((item) => item.slug === categoryKey);
+const calculators = FR_CATEGORY_CALCULATORS[categoryKey] ?? [];
+
+if (!category) {
+	throw new Error('Category not found');
+}
+
+const title = `${category.title} | Astro Calc`;
+const description = `Recherchez des calculatrices françaises dans la catégorie ${category.title}.`;
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-hero">
+				<p class="eyebrow">Catégorie</p>
+				<h1>{category.title}</h1>
+				<p>{description}</p>
+			</section>
+
+			<section class="calculator-grid">
+				{calculators.length > 0 ? (
+					calculators.map((calculator) => (
+						<CalculatorCard
+							href={calculator.href}
+							title={calculator.title}
+							description={calculator.description}
+							emoji={calculator.emoji}
+						/>
+					))
+				) : (
+					<p>Aucune calculatrice disponible pour cette catégorie pour l’instant.</p>
+				)}
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>

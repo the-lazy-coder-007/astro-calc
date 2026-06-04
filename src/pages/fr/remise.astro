@@ -1,0 +1,66 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+
+const title = `Calcul remise | ${SITE_TITLE}`;
+const description = 'Calculez le prix après remise et le montant économisé sur votre achat.';
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-hero">
+				<p class="eyebrow">Quotidien & lifestyle</p>
+				<h1>Calcul remise</h1>
+				<p>Calculez la nouvelle étiquette et l’économie réalisée grâce à la remise.</p>
+			</section>
+
+			<section class="hero-card">
+				<form id="discount-form">
+					<label for="price">Prix initial (€)</label>
+					<input id="price" name="price" type="number" min="0" step="0.01" value="120" required />
+					<label for="discount">Remise (%)</label>
+					<input id="discount" name="discount" type="number" min="0" max="100" step="0.1" value="20" required />
+					<button type="submit">Calculer</button>
+				</form>
+				<div id="results" class="results" aria-live="polite"></div>
+			</section>
+		</main>
+		<Footer />
+		<script type="module">
+			const form = document.getElementById('discount-form');
+			const results = document.getElementById('results');
+
+			function formatEUR(value) {
+				return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(value);
+			}
+
+			function update() {
+				const price = Number(document.getElementById('price').value || 0);
+				const discount = Number(document.getElementById('discount').value || 0) / 100;
+				const reduction = price * discount;
+				const finalPrice = price - reduction;
+
+				results.innerHTML = `
+					<p><strong>Montant de la remise :</strong> ${formatEUR(reduction)}</p>
+					<p><strong>Prix après remise :</strong> ${formatEUR(finalPrice)}</p>
+					<p><strong>Vous économisez :</strong> ${(discount * 100).toFixed(1)} %</p>
+				`;
+			}
+
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				update();
+			});
+
+			update();
+		</script>
+	</body>
+</html>

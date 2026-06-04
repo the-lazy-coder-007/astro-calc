@@ -1,0 +1,77 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+
+const title = `Épargne | ${SITE_TITLE}`;
+const description = 'Projetez le montant futur de votre épargne avec intérêts composés et versements réguliers.';
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-hero">
+				<p class="eyebrow">Finances & crédit</p>
+				<h1>Épargne & intérêt composé</h1>
+				<p>Calculez la croissance de votre épargne avec un taux annuel et des versements réguliers.</p>
+			</section>
+
+			<section class="hero-card">
+				<form id="savings-form">
+					<label for="initial">Épargne initiale (€)</label>
+					<input id="initial" name="initial" type="number" min="0" step="100" value="5000" required />
+					<label for="contribution">Versement mensuel (€)</label>
+					<input id="contribution" name="contribution" type="number" min="0" step="10" value="200" required />
+					<label for="rate">Taux annuel (%)</label>
+					<input id="rate" name="rate" type="number" min="0" step="0.01" value="4" required />
+					<label for="years">Durée (années)</label>
+					<input id="years" name="years" type="number" min="1" step="1" value="10" required />
+					<button type="submit">Calculer</button>
+				</form>
+				<div id="results" class="results" aria-live="polite"></div>
+			</section>
+		</main>
+		<Footer />
+		<script type="module">
+			const form = document.getElementById('savings-form');
+			const results = document.getElementById('results');
+
+			function formatEUR(value) {
+				return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
+			}
+
+			function update() {
+				const principal = Number(document.getElementById('initial').value || 0);
+				const contribution = Number(document.getElementById('contribution').value || 0);
+				const rate = Number(document.getElementById('rate').value || 0) / 100;
+				const years = Number(document.getElementById('years').value || 0);
+				const months = years * 12;
+				let balance = principal;
+
+				for (let i = 0; i < months; i++) {
+					balance += contribution;
+					balance *= 1 + rate / 12;
+				}
+
+				results.innerHTML = `
+					<p><strong>Montant final :</strong> ${formatEUR(balance)}</p>
+					<p><strong>Apport initial :</strong> ${formatEUR(principal)}</p>
+					<p><strong>Total des versements :</strong> ${formatEUR(contribution * months)}</p>
+				`;
+			}
+
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				update();
+			});
+
+			update();
+		</script>
+	</body>
+</html>

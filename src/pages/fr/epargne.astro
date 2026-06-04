@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { SITE_TITLE } from '../../consts';
 
 const title = `Épargne | ${SITE_TITLE}`;
@@ -16,6 +17,12 @@ const description = 'Projetez le montant futur de votre épargne avec intérêts
 	<body>
 		<Header />
 		<main>
+			<Breadcrumb items={[
+				{ label: 'Accueil', href: '/' },
+				{ label: 'Calculatrices', href: '/fr' },
+				{ label: 'Finances & crédit', href: '/fr/finances' },
+				{ label: 'Épargne & intérêt composé' }
+			]} />
 			<section class="page-hero">
 				<p class="eyebrow">Finances & crédit</p>
 				<h1>Épargne & intérêt composé</h1>
@@ -26,33 +33,33 @@ const description = 'Projetez le montant futur de votre épargne avec intérêts
 				<div class="calculator-input-group">
 					<form id="savings-form">
 						<label for="initial">Épargne initiale</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="initial" name="initial" type="number" min="0" step="100" value="5000" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+							<span class="input-unit">€</span>
 						</div>
 						<input type="range" id="initial-slider" min="0" max="500000" step="1000" value="5000" />
 						<div class="input-hint">Capital initial</div>
 						
 						<label for="contribution" style="margin-top: 1.5rem;">Versement mensuel</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="contribution" name="contribution" type="number" min="0" step="10" value="200" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+							<span class="input-unit">€</span>
 						</div>
 						<input type="range" id="contribution-slider" min="0" max="5000" step="10" value="200" />
 						<div class="input-hint">Contribution régulière</div>
 						
 						<label for="rate" style="margin-top: 1.5rem;">Taux annuel</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="rate" name="rate" type="number" min="0" step="0.01" value="4" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">%</span>
+							<span class="input-unit">%</span>
 						</div>
 						<input type="range" id="rate-slider" min="0" max="10" step="0.01" value="4" />
 						<div class="input-hint">Rendement annuel</div>
 						
 						<label for="years" style="margin-top: 1.5rem;">Durée</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="years" name="years" type="number" min="1" step="1" value="10" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">ans</span>
+							<span class="input-unit">ans</span>
 						</div>
 						<input type="range" id="years-slider" min="1" max="50" step="1" value="10" />
 						<div class="input-hint">Période d'investissement</div>

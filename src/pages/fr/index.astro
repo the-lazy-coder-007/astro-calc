@@ -4,6 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import CalculatorCard from '../../components/CalculatorCard.astro';
 import { FR_CATEGORIES, FR_CALCULATORS, getCategoryByTitle } from '../../lib/fr/calculators.ts';
+import { SITE_TITLE } from '../../consts';
 
 const featured = FR_CALCULATORS.slice(0, 6);
 ---
@@ -11,36 +12,37 @@ const featured = FR_CALCULATORS.slice(0, 6);
 <!doctype html>
 <html lang="fr">
 	<head>
-		<BaseHead title="Astro Calc France | Calculatrices gratuites" description="Une plateforme de calculs pour la France : impôts, salaire, logement, santé, auto et finances." />
+		<BaseHead
+			title={`${SITE_TITLE} | Calculatrices gratuites pour la France`}
+			description="Calculatrices gratuites pour la France : impôts, salaire, logement, santé, auto et finances. Transparentes, à jour 2026, sans données stockées."
+		/>
 	</head>
 	<body>
 		<Header />
 		<main>
 			<section class="page-hero">
-				<h1>Calculatrices françaises — Gratuites. Transparentes. Sans données stockées.</h1>
-				<p>Plus de 50 outils pour calculer impôts, salaires, crédits, santé et dépenses du quotidien. Tous les calculs se font dans votre navigateur.</p>
+				<p class="eyebrow">Calculatrices gratuites · 2026</p>
+				<h1>Calculatrices françaises — gratuites, transparentes, sans données stockées</h1>
+				<p>
+					{SITE_TITLE} regroupe des outils pour les sujets les plus courants en France :
+					impôts et salaire, prestations sociales, logement, santé, auto et finances.
+					Chaque calcul s’effectue dans votre navigateur, sans inscription.
+				</p>
+				<div class="trust-badges">
+					<span class="trust-badge">📅 À jour 2026</span>
+					<a class="trust-badge" href="https://github.com/the-lazy-coder-007/astro-calc" target="_blank" rel="noopener noreferrer">📂 Open Source</a>
+					<span class="trust-badge">🔒 Aucune donnée stockée</span>
+				</div>
 				<div class="hero-actions">
 					<a class="hero-button" href="/fr/salaire-net">Commencer maintenant</a>
+					<a class="hero-outline" href="/fr/faq">En savoir plus</a>
 				</div>
 			</section>
 
 			<section>
-				<h2>Parcourir par catégorie</h2>
-				<div class="category-grid">
-					{FR_CATEGORIES.map((category) => (
-						<a class="category-tile" href={`/fr/${category.slug}`} data-color={category.color}>
-							<span>→</span>
-							<div>
-								<strong>{category.title}</strong>
-								<p>Calculatrices dédiées et simulateurs pratiques.</p>
-							</div>
-						</a>
-					))}
+				<div class="section-heading">
+					<h2>Calculatrices populaires</h2>
 				</div>
-			</section>
-
-			<section>
-				<h2>Calculatrices populaires</h2>
 				<div class="calculator-grid">
 					{featured.map((calculator) => {
 						const category = getCategoryByTitle(calculator.category);
@@ -55,4 +57,46 @@ const featured = FR_CALCULATORS.slice(0, 6);
 						);
 					})}
 				</div>
+			</section>
+
+			<section>
+				<div class="section-heading">
+					<h2>Parcourir par catégorie</h2>
+				</div>
+				<div class="category-grid">
+					{FR_CATEGORIES.map((category) => (
+						<a class="category-tile" href={`/fr/${category.slug}`} data-color={category.color}>
+							<span class="category-tile__icon" aria-hidden="true">{category.icon}</span>
+							<div>
+								<strong>{category.title}</strong>
+								<p>Calculatrices dédiées et simulateurs pratiques.</p>
+							</div>
+						</a>
+					))}
+				</div>
+			</section>
+
+			<section>
+				<h2>Pourquoi {SITE_TITLE} ?</h2>
+				<div class="features-grid">
+					<div class="feature-item">
+						<span>📅</span>
+						<h3>À jour pour 2026</h3>
+						<p>Tranches d’imposition, cotisations et barèmes actualisés selon les sources officielles.</p>
+					</div>
+					<div class="feature-item">
+						<span>📂</span>
+						<h3>Open Source</h3>
+						<p>Code accessible sur GitHub. Vérifiez les formules et signalez les erreurs.</p>
+					</div>
+					<div class="feature-item">
+						<span>🔒</span>
+						<h3>Confidentialité</h3>
+						<p>Tous les calculs restent dans votre navigateur. Rien n’est envoyé à un serveur.</p>
+					</div>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
 </html>

@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { SITE_TITLE } from '../../consts';
 
 const title = `IMC | ${SITE_TITLE}`;
@@ -16,6 +17,12 @@ const description = 'Calculez votre indice de masse corporelle (IMC) et affichez
 	<body>
 		<Header />
 		<main>
+			<Breadcrumb items={[
+				{ label: 'Accueil', href: '/' },
+				{ label: 'Calculatrices', href: '/fr' },
+				{ label: 'Santé', href: '/fr/sante' },
+				{ label: 'Indice de masse corporelle' }
+			]} />
 			<section class="page-hero">
 				<p class="eyebrow">Santé</p>
 				<h1>Indice de masse corporelle</h1>
@@ -26,17 +33,17 @@ const description = 'Calculez votre indice de masse corporelle (IMC) et affichez
 				<div class="calculator-input-group">
 					<form id="bmi-form">
 						<label for="weight">Poids</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="weight" name="weight" type="number" min="0" step="0.1" value="70" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">kg</span>
+							<span class="input-unit">kg</span>
 						</div>
 						<input type="range" id="weight-slider" min="20" max="200" step="0.5" value="70" />
 						<div class="input-hint">Entre 20 et 200 kg</div>
 						
 						<label for="height" style="margin-top: 1.5rem;">Taille</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="height" name="height" type="number" min="0" step="0.5" value="175" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">cm</span>
+							<span class="input-unit">cm</span>
 						</div>
 						<input type="range" id="height-slider" min="100" max="250" step="0.5" value="175" />
 						<div class="input-hint">Entre 100 et 250 cm</div>

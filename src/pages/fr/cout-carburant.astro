@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { SITE_TITLE } from '../../consts';
 
 const title = `Coût carburant | ${SITE_TITLE}`;
@@ -16,6 +17,12 @@ const description = 'Calculez le coût en carburant pour un trajet en voiture en
 	<body>
 		<Header />
 		<main>
+			<Breadcrumb items={[
+				{ label: 'Accueil', href: '/' },
+				{ label: 'Calculatrices', href: '/fr' },
+				{ label: 'Auto & mobilité', href: '/fr/auto' },
+				{ label: 'Coût carburant' }
+			]} />
 			<section class="page-hero">
 				<p class="eyebrow">Auto & mobilité</p>
 				<h1>Coût carburant</h1>
@@ -26,33 +33,33 @@ const description = 'Calculez le coût en carburant pour un trajet en voiture en
 				<div class="calculator-input-group">
 					<form id="fuel-form">
 						<label for="distance">Distance du trajet</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="distance" name="distance" type="number" min="0" step="5" value="120" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">km</span>
+							<span class="input-unit">km</span>
 						</div>
 						<input type="range" id="distance-slider" min="0" max="5000" step="5" value="120" />
 						<div class="input-hint">Distance en kilomètres</div>
 						
 						<label for="consumption" style="margin-top: 1.5rem;">Consommation moyenne</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="consumption" name="consumption" type="number" min="0" step="0.1" value="6.5" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">L/100km</span>
+							<span class="input-unit">L/100km</span>
 						</div>
 						<input type="range" id="consumption-slider" min="3" max="15" step="0.1" value="6.5" />
 						<div class="input-hint">Litres par 100 km</div>
 						
 						<label for="fuel-price" style="margin-top: 1.5rem;">Prix du carburant</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="fuel-price" name="fuel-price" type="number" min="0" step="0.01" value="1.85" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€/L</span>
+							<span class="input-unit">€/L</span>
 						</div>
 						<input type="range" id="fuel-price-slider" min="0.5" max="3" step="0.01" value="1.85" />
 						<div class="input-hint">Prix par litre</div>
 						
 						<label for="passengers" style="margin-top: 1.5rem;">Nombre de passagers</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="passengers" name="passengers" type="number" min="1" step="1" value="2" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">👤</span>
+							<span class="input-unit">👤</span>
 						</div>
 						<input type="range" id="passengers-slider" min="1" max="10" step="1" value="2" />
 						<div class="input-hint">De 1 à 10 passagers</div>

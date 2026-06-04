@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { SITE_TITLE } from '../../consts';
 
 const title = `Prêt immobilier | ${SITE_TITLE}`;
@@ -16,6 +17,12 @@ const description = 'Calculez les mensualités, le total des intérêts et le co
 	<body>
 		<Header />
 		<main>
+			<Breadcrumb items={[
+				{ label: 'Accueil', href: '/' },
+				{ label: 'Calculatrices', href: '/fr' },
+				{ label: 'Logement & immobilier', href: '/fr/logement' },
+				{ label: 'Prêt immobilier' }
+			]} />
 			<section class="page-hero">
 				<p class="eyebrow">Logement & immobilier</p>
 				<h1>Prêt immobilier</h1>
@@ -26,25 +33,25 @@ const description = 'Calculez les mensualités, le total des intérêts et le co
 				<div class="calculator-input-group">
 					<form id="loan-form">
 						<label for="amount">Montant emprunté</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="amount" name="amount" type="number" min="0" step="5000" value="250000" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+							<span class="input-unit">€</span>
 						</div>
 						<input type="range" id="amount-slider" min="0" max="1000000" step="5000" value="250000" />
 						<div class="input-hint">Montant total du prêt immobilier</div>
 						
 						<label for="rate" style="margin-top: 1.5rem;">Taux annuel</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="rate" name="rate" type="number" min="0" step="0.01" value="3.10" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">%</span>
+							<span class="input-unit">%</span>
 						</div>
 						<input type="range" id="rate-slider" min="0" max="8" step="0.01" value="3.10" />
 						<div class="input-hint">Taux d'intérêt annuel</div>
 						
 						<label for="years" style="margin-top: 1.5rem;">Durée du prêt</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="years" name="years" type="number" min="1" step="1" value="20" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">ans</span>
+							<span class="input-unit">ans</span>
 						</div>
 						<input type="range" id="years-slider" min="1" max="40" step="1" value="20" />
 						<div class="input-hint">De 1 à 40 ans</div>

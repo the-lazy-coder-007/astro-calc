@@ -14,10 +14,17 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		<Header />
 		<main>
 			<section class="page-hero">
+				<p class="eyebrow">Calculatrices gratuites · France</p>
 				<h1>Bienvenue sur {SITE_TITLE}</h1>
 				<p>{SITE_DESCRIPTION}</p>
+				<div class="trust-badges">
+					<span class="trust-badge">📅 À jour 2026</span>
+					<a class="trust-badge" href="https://github.com/the-lazy-coder-007/astro-calc" target="_blank" rel="noopener noreferrer">📂 Open Source</a>
+					<span class="trust-badge">🔒 Aucune donnée stockée</span>
+				</div>
 				<div class="hero-actions">
 					<a class="hero-button" href="/fr">Explorer les calculatrices</a>
+					<a class="hero-outline" href="/fr/salaire-net">Impôt sur le revenu</a>
 				</div>
 			</section>
 
@@ -26,7 +33,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 				<div class="features-grid">
 					<div class="feature-item">
 						<span>🔒</span>
-						<h3>Aucune données stockées</h3>
+						<h3>Aucune donnée stockée</h3>
 						<p>Tous les calculs sont faits dans votre navigateur. Rien n'est envoyé à un serveur.</p>
 					</div>
 					<div class="feature-item">

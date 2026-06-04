@@ -11,6 +11,7 @@ export type Category = {
 	slug: string;
 	title: string;
 	color: string;
+	icon: string;
 	gradientFrom: string;
 	gradientTo: string;
 };
@@ -92,14 +93,14 @@ export const FR_CALCULATORS: CalculatorItem[] = [
 ];
 
 export const FR_CATEGORIES: Category[] = [
-	{ slug: 'travail', title: 'Travail & Salaire', color: 'blue', gradientFrom: 'from-blue-500', gradientTo: 'to-cyan-600' },
-	{ slug: 'impots', title: 'Impôts & contributions', color: 'amber', gradientFrom: 'from-amber-500', gradientTo: 'to-orange-600' },
-	{ slug: 'social', title: 'Prestations sociales', color: 'green', gradientFrom: 'from-green-500', gradientTo: 'to-emerald-600' },
-	{ slug: 'logement', title: 'Logement & immobilier', color: 'purple', gradientFrom: 'from-purple-500', gradientTo: 'to-violet-600' },
-	{ slug: 'sante', title: 'Santé', color: 'red', gradientFrom: 'from-red-500', gradientTo: 'to-rose-600' },
-	{ slug: 'auto', title: 'Auto & mobilité', color: 'orange', gradientFrom: 'from-orange-500', gradientTo: 'to-yellow-600' },
-	{ slug: 'finances', title: 'Finances & crédit', color: 'indigo', gradientFrom: 'from-indigo-500', gradientTo: 'to-blue-600' },
-	{ slug: 'quotidien', title: 'Quotidien & lifestyle', color: 'slate', gradientFrom: 'from-slate-500', gradientTo: 'to-gray-600' },
+	{ slug: 'travail', title: 'Travail & Salaire', color: 'blue', icon: '💼', gradientFrom: 'from-blue-500', gradientTo: 'to-cyan-600' },
+	{ slug: 'impots', title: 'Impôts & contributions', color: 'amber', icon: '🏛️', gradientFrom: 'from-amber-500', gradientTo: 'to-orange-600' },
+	{ slug: 'social', title: 'Prestations sociales', color: 'green', icon: '🤝', gradientFrom: 'from-green-500', gradientTo: 'to-emerald-600' },
+	{ slug: 'logement', title: 'Logement & immobilier', color: 'purple', icon: '🏠', gradientFrom: 'from-purple-500', gradientTo: 'to-violet-600' },
+	{ slug: 'sante', title: 'Santé', color: 'red', icon: '❤️', gradientFrom: 'from-red-500', gradientTo: 'to-rose-600' },
+	{ slug: 'auto', title: 'Auto & mobilité', color: 'orange', icon: '🚗', gradientFrom: 'from-orange-500', gradientTo: 'to-yellow-600' },
+	{ slug: 'finances', title: 'Finances & crédit', color: 'indigo', icon: '💳', gradientFrom: 'from-indigo-500', gradientTo: 'to-blue-600' },
+	{ slug: 'quotidien', title: 'Quotidien & lifestyle', color: 'slate', icon: '🧮', gradientFrom: 'from-slate-500', gradientTo: 'to-gray-600' },
 ];
 
 export const FR_CATEGORY_CALCULATORS: Record<string, CalculatorItem[]> = {

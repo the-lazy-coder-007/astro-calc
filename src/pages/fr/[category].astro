@@ -2,8 +2,10 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import CalculatorCard from '../../components/CalculatorCard.astro';
 import { FR_CATEGORIES, FR_CATEGORY_CALCULATORS } from '../../lib/fr/calculators.ts';
+import { SITE_TITLE } from '../../consts';
 
 export function getStaticPaths() {
 	return FR_CATEGORIES.map((category) => ({
@@ -19,7 +21,7 @@ if (!category) {
 	throw new Error('Category not found');
 }
 
-const title = `${category.title} | Astro Calc`;
+const title = `${category.title} | ${SITE_TITLE}`;
 const description = `Recherchez des calculatrices françaises dans la catégorie ${category.title}.`;
 ---
 
@@ -31,8 +33,13 @@ const description = `Recherchez des calculatrices françaises dans la catégorie
 	<body>
 		<Header />
 		<main>
+			<Breadcrumb items={[
+				{ label: 'Accueil', href: '/' },
+				{ label: 'Calculatrices', href: '/fr' },
+				{ label: category.title }
+			]} />
 			<section class="page-hero">
-				<p class="eyebrow">Catégorie</p>
+				<p class="eyebrow">{category.icon} Catégorie</p>
 				<h1>{category.title}</h1>
 				<p>{description}</p>
 			</section>

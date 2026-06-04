@@ -1,69 +1,136 @@
 ---
-import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
+import { FR_CATEGORIES } from '../lib/fr/calculators.ts';
+
+const currentPath = Astro.url.pathname;
+const topCategories = FR_CATEGORIES.slice(0, 4);
+const moreCategories = FR_CATEGORIES.slice(4);
+
+function isActive(href: string) {
+	return currentPath === href || currentPath.startsWith(`${href}/`);
+}
+
+function shortLabel(title: string) {
+	return title.split(' & ')[0];
+}
 ---
 
-<header>
-	<nav>
-		<h2><a href="/" class="site-title">{SITE_TITLE}</a></h2>
-		<div class="internal-links">
-			<HeaderLink href="/">Accueil</HeaderLink>
-			<HeaderLink href="/fr">Calculatrices</HeaderLink>
-			<HeaderLink href="/fr/faq">FAQ</HeaderLink>
-			<HeaderLink href="/fr/contact">Contact</HeaderLink>
-		</div>
+<header class="site-header">
+	<div class="header-inner">
+		<a href="/" class="site-logo">
+			<span class="logo-flag" aria-hidden="true">🇫🇷</span>
+			<span>{SITE_TITLE}</span>
+			<span class="logo-badge">FC</span>
+		</a>
+
+		<nav class="desktop-nav" aria-label="Navigation principale">
+			<a href="/fr" class:list={[{ active: currentPath === '/fr' }]}>Calculatrices</a>
+			{topCategories.map((category) => (
+				<a
+					href={`/fr/${category.slug}`}
+					class:list={[{ active: isActive(`/fr/${category.slug}`) }]}
+				>
+					{shortLabel(category.title)}
+				</a>
+			))}
+			<div class="nav-dropdown" id="nav-dropdown">
+				<button type="button" class="nav-dropdown-toggle" id="nav-dropdown-toggle" aria-expanded="false">
+					Plus ▾
+				</button>
+				<div class="nav-dropdown-menu">
+					{moreCategories.map((category) => (
+						<a href={`/fr/${category.slug}`}>
+							{category.icon} {category.title}
+						</a>
+					))}
+					<a href="/fr/faq">FAQ</a>
+					<a href="/fr/contact">Contact</a>
+					<a href="/fr/mentions-legales">Mentions légales</a>
+				</div>
+			</div>
+		</nav>
+
+		<button type="button" class="mobile-toggle" id="mobile-menu-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+			<svg class="burger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+				<path d="M4 6h16M4 12h16M4 18h16" />
+			</svg>
+			<svg class="close-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+				<path d="M6 6l12 12M18 6L6 18" />
+			</svg>
+		</button>
+	</div>
+
+	<nav class="mobile-menu" id="mobile-menu" aria-label="Menu mobile">
+		<p class="mobile-menu-section">Calculatrices</p>
+		<a href="/fr" class:list={[{ active: currentPath === '/fr' }]}>Toutes les calculatrices</a>
+		{FR_CATEGORIES.map((category) => (
+			<a
+				href={`/fr/${category.slug}`}
+				class:list={[{ active: isActive(`/fr/${category.slug}`) }]}
+			>
+				<span aria-hidden="true">{category.icon}</span>
+				{category.title}
+			</a>
+		))}
+		<p class="mobile-menu-section">À propos</p>
+		<a href="/fr/faq">FAQ</a>
+		<a href="/fr/contact">Contact</a>
+		<a href="/fr/mentions-legales">Mentions légales</a>
 	</nav>
 </header>
+
 <style>
-	header {
-		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-	}
-
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-	}
-	nav {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
-	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
-	}
-
-	.site-title {
-		font-weight: 800;
-		font-size: 1.3em;
-		letter-spacing: -0.02em;
-	}
-
-	@media (max-width: 720px) {
-	}
-
-	.site-title {
-		font-weight: 800;
-		font-size: 1.3em;
-		letter-spacing: -0.02em;
-	}
-
-	@media (max-width: 720px) {
-		.social-links {
-			display: none;
-		}
+	.hidden {
+		display: none;
 	}
 </style>
+
+<script>
+	function setupHeader() {
+		const mobileToggle = document.getElementById('mobile-menu-toggle');
+		const mobileMenu = document.getElementById('mobile-menu');
+		const dropdown = document.getElementById('nav-dropdown');
+		const dropdownToggle = document.getElementById('nav-dropdown-toggle');
+
+		if (mobileToggle && mobileMenu) {
+			const burger = mobileToggle.querySelector('.burger-icon');
+			const close = mobileToggle.querySelector('.close-icon');
+
+			mobileToggle.addEventListener('click', () => {
+				const isOpen = mobileMenu.classList.contains('open');
+				mobileMenu.classList.toggle('open', !isOpen);
+				mobileToggle.setAttribute('aria-expanded', String(!isOpen));
+				mobileToggle.setAttribute('aria-label', isOpen ? 'Ouvrir le menu' : 'Fermer le menu');
+				burger?.classList.toggle('hidden', !isOpen);
+				close?.classList.toggle('hidden', isOpen);
+			});
+
+			window.addEventListener('resize', () => {
+				if (window.innerWidth >= 768 && mobileMenu.classList.contains('open')) {
+					mobileMenu.classList.remove('open');
+					mobileToggle.setAttribute('aria-expanded', 'false');
+					burger?.classList.remove('hidden');
+					close?.classList.add('hidden');
+				}
+			});
+		}
+
+		if (dropdown && dropdownToggle) {
+			dropdownToggle.addEventListener('click', (event) => {
+				event.stopPropagation();
+				const isOpen = dropdown.classList.toggle('open');
+				dropdownToggle.setAttribute('aria-expanded', String(isOpen));
+			});
+
+			document.addEventListener('click', (event) => {
+				if (!dropdown.contains(event.target as Node)) {
+					dropdown.classList.remove('open');
+					dropdownToggle.setAttribute('aria-expanded', 'false');
+				}
+			});
+		}
+	}
+
+	setupHeader();
+	document.addEventListener('astro:after-swap', setupHeader);
+</script>

@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { SITE_TITLE } from '../../consts';
 
 const title = `Charges sociales | ${SITE_TITLE}`;
@@ -16,6 +17,12 @@ const description = 'Simulez les cotisations sociales françaises pour un salair
 	<body>
 		<Header />
 		<main>
+			<Breadcrumb items={[
+				{ label: 'Accueil', href: '/' },
+				{ label: 'Calculatrices', href: '/fr' },
+				{ label: 'Prestations sociales', href: '/fr/social' },
+				{ label: 'Charges sociales' }
+			]} />
 			<section class="page-hero">
 				<p class="eyebrow">Prestations sociales</p>
 				<h1>Charges sociales</h1>
@@ -26,9 +33,9 @@ const description = 'Simulez les cotisations sociales françaises pour un salair
 				<div class="calculator-input-group">
 					<form id="charges-form">
 						<label for="brut">Salaire brut annuel</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="brut" name="brut" type="number" min="0" step="1000" value="50000" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+							<span class="input-unit">€</span>
 						</div>
 						<input type="range" id="brut-slider" min="0" max="500000" step="1000" value="50000" />
 						<div class="input-hint">Ajustez votre salaire brut annuel</div>

@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { SITE_TITLE } from '../../consts';
 ---
 
@@ -13,24 +14,34 @@ import { SITE_TITLE } from '../../consts';
 	<body>
 		<Header />
 		<main>
+			<Breadcrumb items={[
+				{ label: 'Accueil', href: '/' },
+				{ label: 'Calculatrices', href: '/fr' },
+				{ label: 'FAQ' }
+			]} />
 			<section class="page-hero">
 				<p class="eyebrow">FAQ</p>
 				<h1>Questions fréquentes</h1>
 				<p>Réponses claires sur le fonctionnement des outils et la confidentialité des données.</p>
 			</section>
 
-			<section class="hero-card">
-				<h2>Les calculs sont-ils fiables ?</h2>
-				<p>Les résultats sont basés sur des formules et des barèmes publiques à jour pour 2026. Ils servent de simulation et ne remplacent pas un conseil professionnel.</p>
-
-				<h2>Les données sont-elles conservées ?</h2>
-				<p>Non. Toutes les calculs sont effectuées dans votre navigateur. Aucune donnée n’est envoyée ou stockée sur le serveur.</p>
-
-				<h2>Quels calculs sont disponibles ?</h2>
-				<p>Ce site propose des outils pour l’impôt, le salaire, la TVA, le crédit immobilier, l’épargne, les dépenses du quotidien, l’auto et la santé.</p>
-
-				<h2>Puis-je proposer un nouveau calculateur ?</h2>
-				<p>Oui. Le projet est ouvert à l’amélioration : vous pouvez créer un issue sur GitHub ou proposer un nouveau calculateur.</p>
+			<section class="faq-list">
+				<article class="faq-item">
+					<h2>Les calculs sont-ils fiables ?</h2>
+					<p>Les résultats sont basés sur des formules et des barèmes publics à jour pour 2026. Ils servent de simulation et ne remplacent pas un conseil professionnel.</p>
+				</article>
+				<article class="faq-item">
+					<h2>Les données sont-elles conservées ?</h2>
+					<p>Non. Tous les calculs sont effectués dans votre navigateur. Aucune donnée n'est envoyée ou stockée sur le serveur.</p>
+				</article>
+				<article class="faq-item">
+					<h2>Quels calculs sont disponibles ?</h2>
+					<p>Ce site propose des outils pour l'impôt, le salaire, la TVA, le crédit immobilier, l'épargne, les dépenses du quotidien, l'auto et la santé.</p>
+				</article>
+				<article class="faq-item">
+					<h2>Puis-je proposer un nouveau calculateur ?</h2>
+					<p>Oui. Le projet est ouvert à l'amélioration : vous pouvez créer une issue sur GitHub ou proposer un nouveau calculateur.</p>
+				</article>
 			</section>
 		</main>
 		<Footer />

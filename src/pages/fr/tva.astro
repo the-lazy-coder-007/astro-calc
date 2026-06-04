@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { SITE_TITLE } from '../../consts';
 
 const title = `Calcul TVA | ${SITE_TITLE}`;
@@ -16,6 +17,12 @@ const description = 'Calculez facilement le prix hors taxe, le prix TTC et le mo
 	<body>
 		<Header />
 		<main>
+			<Breadcrumb items={[
+				{ label: 'Accueil', href: '/' },
+				{ label: 'Calculatrices', href: '/fr' },
+				{ label: 'Impôts & contributions', href: '/fr/impots' },
+				{ label: 'Calcul TVA' }
+			]} />
 			<section class="page-hero">
 				<p class="eyebrow">Impôts & contributions</p>
 				<h1>Calcul TVA</h1>
@@ -26,9 +33,9 @@ const description = 'Calculez facilement le prix hors taxe, le prix TTC et le mo
 				<div class="calculator-input-group">
 					<form id="tva-form">
 						<label for="price">Montant</label>
-						<div style="position: relative;">
+						<div class="input-with-unit">
 							<input id="price" name="price" type="number" min="0" step="0.01" value="120" required />
-							<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
+							<span class="input-unit">€</span>
 						</div>
 						<input type="range" id="price-slider" min="0" max="10000" step="1" value="120" />
 						<div class="input-hint">Entrez le montant à calculer</div>

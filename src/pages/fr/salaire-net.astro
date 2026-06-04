@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { SITE_TITLE } from '../../consts';
 import { franceIncomeTaxBrackets } from '../../lib/calculators/fr/salaire-net.ts';
 
@@ -19,26 +20,31 @@ const brackets = franceIncomeTaxBrackets;
 	<body>
 		<Header />
 		<main>
+			<Breadcrumb items={[
+				{ label: 'Accueil', href: '/' },
+				{ label: 'Calculatrices', href: '/fr' },
+				{ label: 'Impôts & contributions', href: '/fr/impots' },
+				{ label: calculatorTitle }
+			]} />
 			<section class="page-hero">
 				<p class="eyebrow">Impôts & contributions</p>
 				<h1>{calculatorTitle}</h1>
 				<p>{calculatorDescription}</p>
 			</section>
 			<section class="hero-card">
-					<div class="calculator-input-group">
-						<form id="salary-form">
-							<label for="income">Revenu imposable annuel</label>
-							<div style="position: relative;">
-								<input id="income" name="income" type="number" min="0" step="1000" value={initialIncome} required />
-								<span style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.5rem; color: rgba(96, 115, 159, 0.4);">€</span>
-							</div>
-							<input type="range" id="income-slider" min="0" max="500000" step="1000" value={initialIncome} />
-							<div class="input-hint">Ajustez avec le curseur ou entrez un montant</div>
-							<button type="submit" style="margin-top: 1rem;">Calculer l'impôt</button>
-						</form>
-					</div>
-					<div id="results" class="results calculator-result" aria-live="polite"></div>
+				<div class="calculator-input-group">
+					<form id="salary-form">
+						<label for="income">Revenu imposable annuel</label>
+						<div class="input-with-unit">
+							<input id="income" name="income" type="number" min="0" step="1000" value={initialIncome} required />
+							<span class="input-unit">€</span>
+						</div>
+						<input type="range" id="income-slider" min="0" max="500000" step="1000" value={initialIncome} />
+						<div class="input-hint">Ajustez avec le curseur ou entrez un montant</div>
+						<button type="submit" style="margin-top: 1rem;">Calculer l'impôt</button>
+					</form>
 				</div>
+				<div id="results" class="results calculator-result" aria-live="polite"></div>
 				<div class="section-block">
 					<h2>Tranches d'imposition 2025</h2>
 					<table>

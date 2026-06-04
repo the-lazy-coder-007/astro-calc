@@ -17,11 +17,15 @@ function shortLabel(title: string) {
 
 <header class="site-header">
 	<div class="header-inner">
-		<a href="/" class="site-logo">
-			<span class="logo-flag" aria-hidden="true">🇫🇷</span>
-			<span>{SITE_TITLE}</span>
-			<span class="logo-badge">FC</span>
-		</a>
+		<a href="/fr" class="site-logo">
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6" width="24" height="16" style="margin-right: 8px; border-radius: 2px;">
+		<rect width="3" height="6" fill="#002395"/>
+		<rect x="3" width="3" height="6" fill="#fff"/>
+		<rect x="6" width="3" height="6" fill="#ED2939"/>
+	</svg>
+	<span>{SITE_TITLE}</span>
+	<span class="logo-badge">FC</span>
+</a>
 
 		<nav class="desktop-nav" aria-label="Navigation principale">
 			<a href="/fr" class:list={[{ active: currentPath === '/fr' }]}>Calculatrices</a>

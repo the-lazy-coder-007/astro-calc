@@ -74,89 +74,111 @@ const brackets = franceIncomeTaxBrackets;
 		</main>
 		<Footer />
 		<script type="module">
-			const brackets = ${JSON.stringify(brackets)};
-			const resultsEl = document.getElementById('results');
-			const form = document.getElementById('salary-form');
+<script define:vars={{ brackets }}>
+	const resultsEl = document.getElementById('results');
+	const form = document.getElementById('salary-form');
+	const incomeInput = document.getElementById('income');
+	const incomeSlider = document.getElementById('income-slider');
 
-			function formatEUR(value) {
-				return new Intl.NumberFormat('fr-FR', {
-					style: 'currency',
-					currency: 'EUR',
-					maximumFractionDigits: 0,
-				}).format(value);
-			}
+	function formatEUR(value) {
+		return new Intl.NumberFormat('fr-FR', {
+			style: 'currency',
+			currency: 'EUR',
+			maximumFractionDigits: 0,
+		}).format(value);
+	}
 
-			function calculateTax(income) {
-				let remaining = Math.max(0, income);
-				let previousThreshold = 0;
-				let totalTax = 0;
-				const breakdown = [];
+	function calculateTax(income) {
+		let remaining = Math.max(0, income);
+		let previousThreshold = 0;
+		let totalTax = 0;
+		const breakdown = [];
 
-				for (const bracket of brackets) {
-					if (remaining <= 0) break;
-					const slice = Math.min(remaining, bracket.threshold - previousThreshold);
-					const tax = slice * bracket.rate;
-					breakdown.push({ rate: bracket.rate, taxable: slice, tax });
-					totalTax += tax;
-					remaining -= slice;
-					previousThreshold = bracket.threshold;
-				}
+		for (const bracket of brackets) {
+			if (remaining <= 0) break;
 
-				return { totalTax, breakdown };
-			}
+			const upperLimit =
+				bracket.threshold === Infinity
+					? Number.MAX_SAFE_INTEGER
+					: bracket.threshold;
 
-			function renderResult(income) {
-				const { totalTax, breakdown } = calculateTax(income);
-				const effectiveRate = income > 0 ? (totalTax / income) * 100 : 0;
+			const slice = Math.min(
+				remaining,
+				upperLimit - previousThreshold
+			);
 
-				return `
-					<div class="summary">
-						<p><strong>Revenu imposable :</strong> ${formatEUR(income)}</p>
-						<p><strong>Impôt total estimé :</strong> ${formatEUR(totalTax)}</p>
-						<p><strong>Taux effectif moyen :</strong> ${effectiveRate.toFixed(1)} %</p>
-					</div>
-					<div class="breakdown">
-						<h3>Détail par tranche</h3>
-						<ul>
-							${breakdown
-								.map(
-									(item) =>
-										`<li>${formatEUR(item.taxable)} taxés à ${(
-											item.rate * 100
-										).toFixed(0)} % → ${formatEUR(item.tax)}</li>`,
-								)
-								.join('')}
-						</ul>
-					</div>
-				`;
-			}
+			if (slice <= 0) continue;
 
-			function updateResults() {
-				const incomeInput = document.getElementById('income');
-				const income = Number(incomeInput.value || 0);
-				resultsEl.innerHTML = renderResult(income);
-			}
+			const tax = slice * bracket.rate;
 
-			const incomeInput = document.getElementById('income');
-			const incomeSlider = document.getElementById('income-slider');
-
-			// Sync input and slider
-			incomeInput.addEventListener('input', (e) => {
-				incomeSlider.value = e.target.value;
-				updateResults();
+			breakdown.push({
+				rate: bracket.rate,
+				taxable: slice,
+				tax,
 			});
 
-			incomeSlider.addEventListener('input', (e) => {
-				incomeInput.value = e.target.value;
-				updateResults();
-			});
+			totalTax += tax;
+			remaining -= slice;
+			previousThreshold = upperLimit;
+		}
 
-			form.addEventListener('submit', (event) => {
-				event.preventDefault();
-				updateResults();
-			});
+		return { totalTax, breakdown };
+	}
 
-			updateResults();
+	function renderResult(income) {
+		const { totalTax, breakdown } = calculateTax(income);
+
+		const effectiveRate =
+			income > 0 ? (totalTax / income) * 100 : 0;
+
+		return `
+			<div class="summary">
+				<p><strong>Revenu imposable :</strong> ${formatEUR(income)}</p>
+				<p><strong>Impôt total estimé :</strong> ${formatEUR(totalTax)}</p>
+				<p><strong>Taux effectif moyen :</strong> ${effectiveRate.toFixed(1)} %</p>
+			</div>
+
+			<div class="breakdown">
+				<h3>Détail par tranche</h3>
+				<ul>
+					${breakdown
+						.map(
+							(item) => `
+								<li>
+									${formatEUR(item.taxable)}
+									taxés à ${(item.rate * 100).toFixed(0)} %
+									→ ${formatEUR(item.tax)}
+								</li>
+							`
+						)
+						.join('')}
+				</ul>
+			</div>
+		`;
+	}
+
+	function updateResults() {
+		const income = Number(incomeInput.value || 0);
+		resultsEl.innerHTML = renderResult(income);
+	}
+
+	incomeInput.addEventListener('input', () => {
+		incomeSlider.value = incomeInput.value;
+		updateResults();
+	});
+
+	incomeSlider.addEventListener('input', () => {
+		incomeInput.value = incomeSlider.value;
+		updateResults();
+	});
+
+	form.addEventListener('submit', (event) => {
+		event.preventDefault();
+		updateResults();
+	});
+
+	updateResults();
+</script>
 		</script>
 	</body>
 </html>
